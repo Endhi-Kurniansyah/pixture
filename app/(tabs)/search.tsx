@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width } = Dimensions.get('window');
-const imageWidth = (width - 50) / 2; // Menyesuaikan ukuran grid
-
 const categories = ['Anime', 'Game', 'Art', 'Modern'];
 const sampleData = Array.from({ length: 8 }, (_, index) => ({ id: index.toString() }));
 
@@ -12,15 +18,22 @@ export default function SearchScreen() {
   return (
     <View style={styles.container}>
       {/* Search Bar */}
-      <View style={styles.searchBar}>
-        <Icon name="search" size={20} color="#B0B0B0" style={styles.searchIcon} />
-        <TextInput placeholder="Look for ideas" placeholderTextColor="#B0B0B0" style={styles.searchInput} />
+      <View style={styles.searchBarContainer}>
+        <View style={styles.searchBar}>
+          <Icon name="search" size={20} color="#8E8E8E" style={styles.searchIcon} />
+          <TextInput
+            placeholder="Look for ideas"
+            placeholderTextColor="#8E8E8E"
+            style={styles.searchInput}
+          />
+        </View>
         <TouchableOpacity style={styles.cameraButton}>
-          <Icon name="camera" size={20} color="#fff" />
+          <Icon name="camera" size={20} color="#FFFFFF" />
         </TouchableOpacity>
       </View>
 
       {/* Categories */}
+      <Text style={styles.sectionTitle}>Categories</Text>
       <View style={styles.categoriesContainer}>
         {categories.map((category) => (
           <TouchableOpacity key={category} style={styles.categoryButton}>
@@ -54,18 +67,24 @@ export default function SearchScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 20,
-    paddingTop: 50,
+    paddingTop: 40,
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#EEF1F3',
-    borderRadius: 25,
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    marginBottom: 25,
+    backgroundColor: '#E0E0E0',
+    flex: 1,
+    borderRadius: 20,
+    padding: 10,
+
+    color: '#004d00',
   },
   searchIcon: {
     marginRight: 10,
@@ -73,40 +92,47 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
   },
   cameraButton: {
-    backgroundColor: '#274E13',
-    borderRadius: 20,
-    padding: 8,
+    backgroundColor: '#16423C',
+    borderRadius: 25,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 5,
   },
   categoriesContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 25,
+    flexWrap: 'wrap',
   },
   categoryButton: {
-    backgroundColor: '#274E13',
-    borderRadius: 20,
-    paddingVertical: 6,
-    paddingHorizontal: 15,
+    backgroundColor: '#16423C',
+    borderRadius: 25,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginHorizontal: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 100,
+    marginBottom: 15,
   },
   categoryText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 14,
+    fontWeight: '600',
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#274E13',
-    marginBottom: 15,
+    color: '#16423C',
+    marginBottom: 10,
   },
   gridContainer: {
     justifyContent: 'space-between',
   },
   imagePlaceholder: {
-    width: imageWidth,
-    height: imageWidth * 0.8, // Menyesuaikan proporsi gambar
+    width: (width - 60) / 2,
+    height: ((width - 60) / 2) * 0.75,
     backgroundColor: '#E9ECEF',
     borderRadius: 10,
     marginBottom: 15,

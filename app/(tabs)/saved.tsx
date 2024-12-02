@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function SavedScreen() {
   const savedItems = [
@@ -14,16 +14,14 @@ export default function SavedScreen() {
     <View style={styles.container}>
       {/* Search bar */}
       <View style={styles.searchContainer}>
-        <Ionicons name="search" size={20} color="#6B8E23" style={styles.searchIcon} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Look for the one you saved"
-          placeholderTextColor="#A9A9A9"
-        />
-        <Ionicons name="swap-horizontal-outline" size={24} color="#6B8E23" style={styles.swapIcon} />
-        <TouchableOpacity>
-          <Ionicons name="add-circle-outline" size={28} color="#6B8E23" />
-        </TouchableOpacity>
+      <View style={styles.searchBar}>
+          <Icon name="search" size={20} color="#8E8E8E" style={styles.searchIcon} />
+          <TextInput
+            placeholder="Look for ideas"
+            placeholderTextColor="#8E8E8E"
+            style={styles.searchInput}
+          />
+        </View>
       </View>
 
       {/* Title */}
@@ -56,16 +54,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     padding: 16,
+    paddingHorizontal: 20,
+    paddingTop: 40,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E8E8E8',
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
     marginBottom: 20,
-    marginTop: 30,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E0E0E0',
+    flex: 1,
+    borderRadius: 20,
+    padding: 10,
+
+    color: '#004d00',
   },
   searchIcon: {
     marginRight: 8,

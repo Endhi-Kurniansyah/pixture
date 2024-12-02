@@ -7,7 +7,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: '#FFFFFF',
         tabBarInactiveTintColor: '#6A9C89',
-        headerShown: false, // Hide the header
+        headerShown: false,
         tabBarStyle: {
           position: 'absolute',
           bottom: 20,
@@ -24,6 +24,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
+          title: 'Home',
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name="home-sharp" color={color} size={24} />
           ),
