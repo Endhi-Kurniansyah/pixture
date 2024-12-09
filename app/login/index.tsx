@@ -46,26 +46,26 @@ const LoginScreen = () => {
         <View style={styles.socialLoginContainer}>
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={require('../../assets/images/x.png')} // Ganti dengan ikon "X"
+              source={require('../../assets/images/x.png')}
               style={styles.socialIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={require('../../assets/images/g.png')} // Ganti dengan ikon Google
+              source={require('../../assets/images/g.png')}
               style={styles.socialg}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={require('../../assets/images/f.png')} // Ganti dengan ikon Facebook
+              source={require('../../assets/images/f.png')}
               style={styles.socialIcon}
             />
           </TouchableOpacity>
         </View>
         <Text style={styles.signUpText}>
           Don’t have an account?
-          <TouchableOpacity onPress={() => router.push('./signup')}>
+          <TouchableOpacity onPress={() => router.replace('./signup')}>
             {/* Navigasi ke SignUp */}
             <Text style={styles.signUpLink}> Sign Up</Text>
           </TouchableOpacity>

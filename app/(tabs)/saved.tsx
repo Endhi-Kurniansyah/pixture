@@ -65,19 +65,19 @@ const styles = StyleSheet.create({
   searchBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E0E0E0',
-    flex: 1,
-    borderRadius: 20,
-    padding: 10,
-
-    color: '#004d00',
   },
   searchIcon: {
     marginRight: 8,
   },
   searchInput: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E0E0E0',
     flex: 1,
-    color: '#006400',
+    borderRadius: 20,
+    padding: 10,
+
+    color: '#16423C',
   },
   swapIcon: {
     marginRight: 10,

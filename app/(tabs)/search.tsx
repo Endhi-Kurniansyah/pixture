@@ -83,8 +83,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     padding: 10,
-
-    color: '#004d00',
   },
   searchIcon: {
     marginRight: 10,

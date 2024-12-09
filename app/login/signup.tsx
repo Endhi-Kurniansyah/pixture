@@ -88,7 +88,7 @@ const SignUpScreen = () => {
           Have account?{' '}
           <Text
             style={styles.loginLink}
-            onPress={() => router.push('/login')} // Navigasi ke login page
+            onPress={() => router.replace('/login')} // Navigasi ke login page
           >
             Login
           </Text>
