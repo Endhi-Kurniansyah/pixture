@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,18 +6,58 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 
 const SignUpScreen = () => {
   const router = useRouter();
 
+  // State untuk input pengguna
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // Fungsi untuk menangani pendaftaran
+  const handleSignUp = async () => {
+    if (!username || !email || !password) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://192.168.1.6:3000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nama_pengguna: username,
+          email: email,
+          kata_sandi: password,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        Alert.alert('Success', 'Account created successfully!');
+        router.replace('/login'); // Navigasi ke login page
+      } else {
+        Alert.alert('Error', result.message || 'Something went wrong');
+      }
+    } catch (error) {
+      console.error('Error during sign up:', error);
+      Alert.alert('Error', 'Failed to connect to server');
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Logo */}
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../assets/images/pixture.png')} // Pastikan path gambar benar
+          source={require('../../assets/images/pixture.png')}
           style={styles.logoImage}
         />
       </View>
@@ -31,6 +71,8 @@ const SignUpScreen = () => {
           style={styles.input}
           placeholder="Username"
           placeholderTextColor="#a0b9b9"
+          value={username}
+          onChangeText={setUsername}
         />
         {/* Input Email */}
         <TextInput
@@ -38,6 +80,8 @@ const SignUpScreen = () => {
           placeholder="Email"
           placeholderTextColor="#a0b9b9"
           keyboardType="email-address"
+          value={email}
+          onChangeText={setEmail}
         />
         {/* Input Password */}
         <TextInput
@@ -45,17 +89,13 @@ const SignUpScreen = () => {
           placeholder="Password"
           placeholderTextColor="#a0b9b9"
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
 
-        {/* Tombol Login */}
-        <TouchableOpacity
-          style={styles.signupButton}
-          onPress={() => {
-            console.log('Navigating to login...');
-            router.push('/login'); // Pastikan halaman login ada di struktur folder Anda
-          }}
-        >
-          <Text style={styles.signupButtonText}>Login</Text>
+        {/* Tombol Sign Up */}
+        <TouchableOpacity style={styles.signupButton} onPress={handleSignUp}>
+          <Text style={styles.signupButtonText}>Sign Up</Text>
         </TouchableOpacity>
 
         {/* Atau lanjutkan dengan */}
@@ -65,19 +105,19 @@ const SignUpScreen = () => {
         <View style={styles.socialLoginContainer}>
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={require('../../assets/images/x.png')} // Ganti dengan ikon "X"
+              source={require('../../assets/images/x.png')}
               style={styles.socialIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={require('../../assets/images/g.png')} // Ganti dengan ikon Google
+              source={require('../../assets/images/g.png')}
               style={styles.socialIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
             <Image
-              source={require('../../assets/images/f.png')} // Ganti dengan ikon Facebook
+              source={require('../../assets/images/f.png')}
               style={styles.socialIcon}
             />
           </TouchableOpacity>
@@ -85,10 +125,10 @@ const SignUpScreen = () => {
 
         {/* Navigasi ke Login */}
         <Text style={styles.loginText}>
-          Have account?{' '}
+          Have an account?{' '}
           <Text
             style={styles.loginLink}
-            onPress={() => router.replace('/login')} // Navigasi ke login page
+            onPress={() => router.replace('/login')}
           >
             Login
           </Text>

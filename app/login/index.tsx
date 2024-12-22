@@ -7,7 +7,6 @@ import {
   Image,
   StyleSheet,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 const LoginScreen = () => {
@@ -17,10 +16,11 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:3000/login', { // Ganti URL dengan alamat server Anda
+      // Kirimkan email atau username ke backend
+      const response = await fetch('http://192.168.1.6:3000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password }), // Kirimkan email atau username dan password
       });
 
       const data = await response.json();
@@ -54,7 +54,7 @@ const LoginScreen = () => {
         <Text style={styles.headerText}>Login to your account</Text>
         <TextInput
           style={styles.input}
-          placeholder="Email or username"
+          placeholder="Email or username"  // Gunakan input yang sama untuk email atau username
           placeholderTextColor="#c2c2c2"
           value={email}
           onChangeText={setEmail}
@@ -84,7 +84,7 @@ const LoginScreen = () => {
           <TouchableOpacity style={styles.socialButton}>
             <Image
               source={require('../../assets/images/g.png')}
-              style={styles.socialg}
+              style={styles.socialIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
@@ -190,11 +190,6 @@ const styles = StyleSheet.create({
   signUpLink: {
     color: '#0066cc',
     fontWeight: 'bold',
-  },
-  socialg: {
-    width: 25,
-    height: 25,
-    resizeMode: 'contain',
   },
 });
 
