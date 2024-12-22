@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, SafeAreaView } from 'react-native';
 import { StatusBar } from 'react-native';
-
+import i18n, { setAppLanguage } from '../utils/i18n';
 export default function Index() {
   return (
     <SafeAreaView style={styles.container}>

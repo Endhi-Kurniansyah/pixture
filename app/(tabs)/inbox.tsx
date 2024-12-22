@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, TextInput, ScrollView, SafeAreaView } from 'react-native';
-
+import i18n, { setAppLanguage } from '../utils/i18n';
 export default function Index() {
   const [selectedTab, setSelectedTab] = useState('Mail');
 

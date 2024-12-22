@@ -12,6 +12,33 @@ import { useRouter } from 'expo-router';
 
 const LoginScreen = () => {
   const router = useRouter();
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/login', { // Ganti URL dengan alamat server Anda
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        alert(data.error); // Tampilkan pesan kesalahan dari backend
+        return;
+      }
+
+      // Simpan token di storage (opsional)
+      console.log('Login successful:', data);
+      alert('Login successful');
+      router.push('/(tabs)'); // Navigasi ke halaman berikutnya
+    } catch (error) {
+      console.error('Error logging in:', error);
+      alert('Error logging in. Please try again later.');
+    }
+  };
+
   return (
     <View style={styles.container}>
       {/* Logo */}
@@ -29,17 +56,21 @@ const LoginScreen = () => {
           style={styles.input}
           placeholder="Email or username"
           placeholderTextColor="#c2c2c2"
+          value={email}
+          onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           placeholderTextColor="#c2c2c2"
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity>
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.orLoginWithText}>Or login with</Text>

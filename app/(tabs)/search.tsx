@@ -90,6 +90,8 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
+    borderColor: 'transparent', // Android
+    borderWidth: 0, // Jika ada border bawaan
   },
   cameraButton: {
     backgroundColor: '#16423C',

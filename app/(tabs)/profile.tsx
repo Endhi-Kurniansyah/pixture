@@ -6,28 +6,24 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
-  const router = useRouter(); // Hook untuk navigasi
+  const router = useRouter();
 
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Profile</Text>
-        <TouchableOpacity
-          style={styles.signupButton}
-          onPress={() => {
-            console.log('Navigating to login...');
-            router.push('/login');
-          }}
-        >
-          <Text style={styles.signupText}>Sign up</Text>
+        <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/setting')}>
+          <Ionicons name="reorder-three-sharp" color={'#004d40'} size={24}/>
         </TouchableOpacity>
       </View>
 
-      {/* Gambar Profil */}
+      {/* Profile Image */}
       <View style={styles.profileImageContainer}>
         <Image
           source={require('../../assets/images/user.png')}
@@ -35,8 +31,13 @@ export default function ProfileScreen() {
         />
       </View>
 
-      {/* Nama Profil */}
-      <Text style={styles.profileName}>Your Name</Text>
+      {/* Profile Name */}
+      <Text style={styles.profileName}>Your name</Text>
+
+      {/* Login Button */}
+      <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/login')}>
+        <Text style={styles.loginButtonText}>LOGIN</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -44,53 +45,51 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
-    justifyContent: 'flex-start',
   },
   header: {
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    width: '100%',
     paddingHorizontal: 20,
-    marginTop: 40,
+    marginTop: 30,
   },
   headerTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#1d4d4f', // Warna teks sesuai desain
+    color: '#004d40',
   },
-  signupButton: {
-    paddingVertical: 5,
-  },
-  signupText: {
-    fontSize: 16,
-    color: '#1d4d4f',
-    fontWeight: 'bold',
+  menuButton: {
+    padding: 10,
   },
   profileImageContainer: {
-    marginTop: 50,
+    marginTop: 40,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60, // Membuat gambar bulat
-    resizeMode: 'cover',
-    borderColor: '#e8f1f1',
-    borderWidth: 3,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#e0e0e0',
   },
   profileName: {
     marginTop: 20,
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1d4d4f',
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#004d40',
   },
-  profileEmail: {
-    marginTop: 5,
+  loginButton: {
+    marginTop: 30,
+    backgroundColor: '#004d40',
+    paddingVertical: 10,
+    paddingHorizontal: 50,
+    borderRadius: 10,
+  },
+  loginButtonText: {
     fontSize: 16,
-    color: '#8fa6a8',
+    fontWeight: 'bold',
+    color: '#ffffff',
   },
 });
