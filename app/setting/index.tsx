@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useLoginContext } from '../context/logincontext'; // Import dengan benar
 
 const SettingsScreen = () => {
   const router = useRouter();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setLoggedIn } = useLoginContext(); // Mengambil status login dari context
 
   const sections = [
     {
@@ -18,43 +18,54 @@ const SettingsScreen = () => {
             if (!isLoggedIn) {
               router.push('/login');
             } else {
-              console.log('Navigate to account settings');
+              console.log('Account settings');
             }
           },
           extra: !isLoggedIn ? 'Mendaftar' : null,
         },
-        { label: 'Language',
-          onPress: () => router.push('./language')},
-        { label: 'Notification',
-          onPress: () => router.push('./notification')},
-        { label: 'Privacy & data',
-          onPress: () => router.push('./privacydata')},
+        { label: 'Language', onPress: () => router.push('./language') },
+        { label: 'Notification', onPress: () => router.push('./notification') },
+        { label: 'Privacy & Data', onPress: () => router.push('./privacydata') },
       ],
     },
     {
       title: 'Feedback',
       items: [
-        { label: 'Help center',
-          onPress: () => router.push('./helpcenter')},
-        { label: 'About',
-          onPress: () => router.push('./about')},
+        { label: 'Help Center', onPress: () => router.push('./helpcenter') },
+        { label: 'About', onPress: () => router.push('./about') },
       ],
     },
   ];
 
+  // Tambahkan menu "Action" hanya jika pengguna login
   if (isLoggedIn) {
+    sections[0].items = sections[0].items.filter(
+      (item) => item.label !== 'Account'
+    ); // Hapus tombol 'Account' saat login
     sections.push({
       title: 'Action',
       items: [
-        { label: 'Change account', onPress: () => console.log('Change account') },
-        { label: 'Logout', onPress: () => setIsLoggedIn(false) },
+        {
+          label: 'Change Account',
+          onPress: () => router.push('./changeaccount'),
+        },
+        {
+          label: 'Logout',
+          onPress: () => {
+            setLoggedIn(false); // Logout pengguna
+            router.replace('/login'); // Arahkan kembali ke login
+          },
+        },
       ],
     });
   }
 
   return (
     <ScrollView style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={() => router.push('/profile')}>
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => router.push('/profile')}
+      >
         <Ionicons name="arrow-back" size={24} color="#164e41" />
       </TouchableOpacity>
       <Text style={styles.header}>Settings</Text>

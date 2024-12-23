@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -8,11 +8,14 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useLoginContext } from '../context/logincontext';
 
 const LoginScreen = () => {
+  
   const router = useRouter();
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const { setLoggedIn } = useLoginContext();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
@@ -20,19 +23,19 @@ const LoginScreen = () => {
       const response = await fetch('http://192.168.1.6:3000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }), // Kirimkan email atau username dan password
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
+
       if (!response.ok) {
-        alert(data.error); // Tampilkan pesan kesalahan dari backend
+        alert(data.error || 'Invalid login credentials');
         return;
       }
 
-      // Simpan token di storage (opsional)
-      console.log('Login successful:', data);
+      setLoggedIn(true); // Login berhasil
       alert('Login successful');
-      router.push('/(tabs)'); // Navigasi ke halaman berikutnya
+      router.push('/profile'); // Arahkan ke halaman profil
     } catch (error) {
       console.error('Error logging in:', error);
       alert('Error logging in. Please try again later.');
@@ -44,7 +47,7 @@ const LoginScreen = () => {
       {/* Logo */}
       <View style={styles.logoContainer}>
         <Image
-          source={require('../../assets/images/pixture.png')} // Ganti dengan lokasi file logo Anda
+          source={require('../../assets/images/pixture.png')}
           style={styles.logoImage}
         />
       </View>
@@ -54,7 +57,7 @@ const LoginScreen = () => {
         <Text style={styles.headerText}>Login to your account</Text>
         <TextInput
           style={styles.input}
-          placeholder="Email or username"  // Gunakan input yang sama untuk email atau username
+          placeholder="Email or username"
           placeholderTextColor="#c2c2c2"
           value={email}
           onChangeText={setEmail}
@@ -67,38 +70,14 @@ const LoginScreen = () => {
           value={password}
           onChangeText={setPassword}
         />
-        <TouchableOpacity>
-          <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-        </TouchableOpacity>
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>Login</Text>
         </TouchableOpacity>
-        <Text style={styles.orLoginWithText}>Or login with</Text>
-        <View style={styles.socialLoginContainer}>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image
-              source={require('../../assets/images/x.png')}
-              style={styles.socialIcon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image
-              source={require('../../assets/images/g.png')}
-              style={styles.socialIcon}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.socialButton}>
-            <Image
-              source={require('../../assets/images/f.png')}
-              style={styles.socialIcon}
-            />
-          </TouchableOpacity>
-        </View>
+        
         <Text style={styles.signUpText}>
-          Don’t have an account?
-          <TouchableOpacity onPress={() => router.replace('./signup')}>
-            {/* Navigasi ke SignUp */}
-            <Text style={styles.signUpLink}> Sign Up</Text>
+          Don’t have an account?{' '}
+          <TouchableOpacity onPress={() => router.push('./signup')}>
+            <Text style={styles.signUpLink}>Sign Up</Text>
           </TouchableOpacity>
         </Text>
       </View>
@@ -120,7 +99,6 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     resizeMode: 'contain',
-    marginRight: 10,
   },
   formContainer: {
     flex: 1,
@@ -141,11 +119,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#0d4d4d',
   },
-  forgotPasswordText: {
-    color: '#0d4d4d',
-    marginBottom: 30,
-    textAlign: 'right',
-  },
   loginButton: {
     backgroundColor: '#0d4d4d',
     paddingVertical: 15,
@@ -156,31 +129,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  orLoginWithText: {
-    textAlign: 'center',
-    marginVertical: 20,
-    fontSize: 14,
-    color: '#0d4d4d',
-  },
-  socialLoginContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  socialButton: {
-    height: 40,
-    width: 40,
-    backgroundColor: '#fff',
-    marginHorizontal: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-  },
-  socialIcon: {
-    width: 30,
-    height: 30,
-    resizeMode: 'contain',
   },
   signUpText: {
     textAlign: 'center',
