@@ -6,7 +6,7 @@ export default function RootLayout() {
     <LoginProvider>
       <Stack
         screenOptions={{
-          headerShown: false, // Header global tidak ditampilkan
+          headerShown: false,
         }}
       >
         <Stack.Screen name="(tabs)" />

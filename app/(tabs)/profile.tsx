@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -9,35 +9,79 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { useLoginContext } from '../context/logincontext';
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // State untuk status login
+
+  // Fungsi login (contoh)
+  const handleLogin = () => {
+    setIsLoggedIn(true); // Set status login menjadi true
+  };
+
+  // Fungsi logout (contoh)
+  const handleLogout = () => {
+    setIsLoggedIn(false); // Set status login menjadi false
+  };
 
   return (
     <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Profile</Text>
-        <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/setting')}>
-          <Ionicons name="reorder-three-sharp" color={'#004d40'} size={24}/>
-        </TouchableOpacity>
-      </View>
+      {/* Jika sudah login, tampilkan profil */}
+      {isLoggedIn ? (
+        <>
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Profile</Text>
+            <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/setting')}>
+              <Ionicons name="reorder-three-sharp" color={'#004d40'} size={24} />
+            </TouchableOpacity>
+          </View>
 
-      {/* Profile Image */}
-      <View style={styles.profileImageContainer}>
-        <Image
-          source={require('../../assets/images/user.png')}
-          style={styles.profileImage}
-        />
-      </View>
+          {/* Profile Image */}
+          <View style={styles.profileImageContainer}>
+            <Image
+              source={require('../../assets/images/user.png')}
+              style={styles.profileImage}
+            />
+          </View>
 
-      {/* Profile Name */}
-      <Text style={styles.profileName}>Your name</Text>
+          {/* Profile Name */}
+          <Text style={styles.profileName}>Your name</Text>
 
-      {/* Login Button */}
-      <TouchableOpacity style={styles.loginButton} onPress={() => router.push('/login')}>
-        <Text style={styles.loginButtonText}>LOGIN</Text>
-      </TouchableOpacity>
+          {/* Tombol Logout */}
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogout}>
+            <Text style={styles.loginButtonText}>LOGOUT</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        // Jika belum login, tampilkan halaman login
+        <>
+          {/* Header */}
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>Profile</Text>
+            <TouchableOpacity style={styles.menuButton} onPress={() => router.push('/setting')}>
+              <Ionicons name="reorder-three-sharp" color={'#004d40'} size={24} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Profile Image */}
+          <View style={styles.profileImageContainer}>
+            <Image
+              source={require('../../assets/images/user.png')}
+              style={styles.profileImage}
+            />
+          </View>
+
+          {/* Profile Name */}
+          <Text style={styles.profileName}>Your name</Text>
+
+          {/* Tombol Login */}
+          <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+            <Text style={styles.loginButtonText}>LOGIN</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }
