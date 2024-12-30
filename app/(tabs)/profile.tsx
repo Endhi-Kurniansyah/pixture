@@ -1,34 +1,65 @@
-import React, { useState } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { useLoginContext } from '../context/logincontext';
 
+// Mendefinisikan tipe data untuk user
+interface User {
+  name: string;
+  profileImage: string;
+}
+
 export default function ProfileScreen() {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State untuk status login
+  const { isLoggedIn, setLoggedIn } = useLoginContext(); // Ambil status login dari context
+  const [userData, setUserData] = useState<User | null>(null);  // Tipe data User
+  const [loading, setLoading] = useState(false);  // Untuk status loading
 
-  // Fungsi login (contoh)
+  useEffect(() => {
+    // Ambil data pengguna jika sudah login
+    if (isLoggedIn) {
+      setLoading(true);
+      fetchUserData();
+    }
+  }, [isLoggedIn]);
+
+  // Fungsi untuk mengambil data pengguna
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/user');  // Ganti dengan endpoint API Anda
+      const data: User = await response.json();  // Mendefinisikan tipe data yang diterima
+      setUserData(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      setLoading(false);
+    }
+  };
+
+  // Fungsi login
   const handleLogin = () => {
-    setIsLoggedIn(true); // Set status login menjadi true
+    setLoggedIn(true); // Ubah status login menjadi true
   };
 
-  // Fungsi logout (contoh)
+  // Fungsi logout
   const handleLogout = () => {
-    setIsLoggedIn(false); // Set status login menjadi false
+    setLoggedIn(false); // Ubah status login menjadi false
+    setUserData(null); // Hapus data pengguna setelah logout
   };
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#004d40" />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
       {/* Jika sudah login, tampilkan profil */}
-      {isLoggedIn ? (
+      {isLoggedIn && userData ? (
         <>
           {/* Header */}
           <View style={styles.header}>
@@ -40,14 +71,11 @@ export default function ProfileScreen() {
 
           {/* Profile Image */}
           <View style={styles.profileImageContainer}>
-            <Image
-              source={require('../../assets/images/user.png')}
-              style={styles.profileImage}
-            />
+            <Image source={{ uri: userData.profileImage || 'default-image-url' }} style={styles.profileImage} />
           </View>
 
           {/* Profile Name */}
-          <Text style={styles.profileName}>Your name</Text>
+          <Text style={styles.profileName}>{userData.name || 'Your name'}</Text>
 
           {/* Tombol Logout */}
           <TouchableOpacity style={styles.loginButton} onPress={handleLogout}>
@@ -55,7 +83,7 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         </>
       ) : (
-        // Jika belum login, tampilkan halaman login
+        // Jika belum login, tampilkan tombol login
         <>
           {/* Header */}
           <View style={styles.header}>
@@ -67,10 +95,7 @@ export default function ProfileScreen() {
 
           {/* Profile Image */}
           <View style={styles.profileImageContainer}>
-            <Image
-              source={require('../../assets/images/user.png')}
-              style={styles.profileImage}
-            />
+            <Image source={require('../../assets/images/user.png')} style={styles.profileImage} />
           </View>
 
           {/* Profile Name */}

@@ -11,15 +11,13 @@ import { useRouter } from 'expo-router';
 import { useLoginContext } from '../context/logincontext';
 
 const LoginScreen = () => {
-  
   const router = useRouter();
-  const { setLoggedIn } = useLoginContext();
+  const { setLoggedIn, setUser } = useLoginContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      // Kirimkan email atau username ke backend
       const response = await fetch('http://192.168.1.6:3000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -33,9 +31,11 @@ const LoginScreen = () => {
         return;
       }
 
-      setLoggedIn(true); // Login berhasil
+      // Set user data into context
+      setLoggedIn(true);
+      setUser({ name: data.name, email: data.email }); // Set user data from backend
       alert('Login successful');
-      router.push('/profile'); // Arahkan ke halaman profil
+      router.push('/profile');
     } catch (error) {
       console.error('Error logging in:', error);
       alert('Error logging in. Please try again later.');
@@ -44,7 +44,6 @@ const LoginScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
       <View style={styles.logoContainer}>
         <Image
           source={require('../../assets/images/pixture.png')}
@@ -52,7 +51,6 @@ const LoginScreen = () => {
         />
       </View>
 
-      {/* Login Form */}
       <View style={styles.formContainer}>
         <Text style={styles.headerText}>Login to your account</Text>
         <TextInput
